@@ -10,18 +10,18 @@ matplotlib.use("Agg")
 
 import pandas as pd
 
-import sleepviz as sv
+import vision_plot as vp
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "examples"
 df = pd.read_csv(ROOT / "data" / "Sleep_health.csv")
 
 charts = {
-    "quality_by_occupation": sv.quality_by_occupation,
-    "sleep_duration_distribution": sv.sleep_duration_distribution,
-    "stress_vs_quality": sv.stress_vs_quality,
-    "disorder_breakdown": sv.disorder_breakdown,
-    "correlation_heatmap": sv.correlation_heatmap,
+    "quality_by_occupation": vp.quality_by_occupation,
+    "sleep_duration_distribution": vp.sleep_duration_distribution,
+    "stress_vs_quality": vp.stress_vs_quality,
+    "disorder_breakdown": vp.disorder_breakdown,
+    "correlation_heatmap": vp.correlation_heatmap,
 }
 
 for name, fn in charts.items():

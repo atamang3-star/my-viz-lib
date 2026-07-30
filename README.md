@@ -1,9 +1,9 @@
-# sleepviz-atamang
+# vision_plot
 
-A tiny, opinionated **visualization library** for sleep-health data. Give it a
-pandas DataFrame, get back a publication-clean Matplotlib figure — every chart
-shares one validated, colorblind-aware palette and the same recessive-chrome
-styling, so a whole report looks like it came from one hand.
+**vision_plot** is a tiny, opinionated **visualization library** for sleep-health
+data. Give it a pandas DataFrame, get back a publication-clean Matplotlib figure —
+every chart shares one validated, colorblind-aware palette and the same
+recessive-chrome styling, so a whole report looks like it came from one hand.
 
 Built by following the *Build Your First Library* steps: `src/` layout, a real
 `__init__.py` public API, `pyproject.toml` metadata, an editable install, tests,
@@ -12,7 +12,7 @@ and a wheel.
 ## Install
 
 ```bash
-pip install sleepviz-atamang
+pip install vision-plot-atamang
 ```
 
 Or, for local development from a clone:
@@ -21,18 +21,22 @@ Or, for local development from a clone:
 python -m pip install -e .
 ```
 
+> **Install name vs. import name:** you `pip install vision-plot-atamang`
+> (hyphens, unique on PyPI) but `import vision_plot` (underscores — a valid
+> Python name), exactly as the slides describe.
+
 ## Use
 
 ```python
 import pandas as pd
-import sleepviz as sv
+import vision_plot as vp
 
 df = pd.read_csv("data/Sleep_health.csv")
 
-sv.summarize(df)              # {'rows': 374, 'columns': 13, 'names': [...]}
-sv.missing(df)                # null counts per column, highest first
+vp.summarize(df)              # {'rows': 374, 'columns': 13, 'names': [...]}
+vp.missing(df)                # null counts per column, highest first
 
-fig = sv.quality_by_occupation(df)
+fig = vp.quality_by_occupation(df)
 fig.savefig("quality.png", dpi=150, bbox_inches="tight")
 ```
 

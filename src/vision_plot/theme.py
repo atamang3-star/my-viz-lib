@@ -1,4 +1,4 @@
-"""Shared visual language for every sleepviz chart.
+"""Shared visual language for every vision_plot chart.
 
 One palette, one set of axis rules. Keeping the styling here (instead of
 repeating it inside each chart) is what makes the whole library look like a

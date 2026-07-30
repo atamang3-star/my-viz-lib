@@ -1,4 +1,4 @@
-"""The chart functions — the public API of sleepviz.
+"""The chart functions — the public API of vision_plot.
 
 Design rules (straight from the build-a-library slides):
   * One job per function.
@@ -156,7 +156,7 @@ def correlation_heatmap(df: pd.DataFrame) -> plt.Figure:
     _require(df, cols)
     apply_theme()
     corr = df[cols].corr()
-    cmap = LinearSegmentedColormap.from_list("sleepviz_div", DIVERGING)
+    cmap = LinearSegmentedColormap.from_list("vision_plot_div", DIVERGING)
 
     fig, ax = plt.subplots(figsize=(7.5, 6.5))
     im = ax.imshow(corr.values, cmap=cmap, vmin=-1, vmax=1)

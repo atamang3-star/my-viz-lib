@@ -1,10 +1,10 @@
-"""sleepviz — a tiny, opinionated visualization library for sleep-health data.
+"""vision_plot — a tiny, opinionated visualization library for sleep-health data.
 
     import pandas as pd
-    import sleepviz as sv
+    import vision_plot as vp
 
     df = pd.read_csv("data/Sleep_health.csv")
-    fig = sv.quality_by_occupation(df)
+    fig = vp.quality_by_occupation(df)
     fig.savefig("quality.png", dpi=150)
 
 Every chart function takes a pandas DataFrame and returns a Matplotlib Figure.

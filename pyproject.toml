@@ -3,9 +3,9 @@ requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "sleepviz-atamang"
+name = "vision-plot-atamang"
 version = "0.1.0"
-description = "A tiny visualization helper for sleep-health data"
+description = "vision_plot: a tiny visualization helper for sleep-health data"
 readme = "README.md"
 requires-python = ">=3.9"
 license = { file = "LICENSE" }

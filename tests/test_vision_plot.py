@@ -7,7 +7,7 @@ import pandas as pd
 import pytest
 from matplotlib.figure import Figure
 
-import sleepviz as sv
+import vision_plot as vp
 
 
 @pytest.fixture
@@ -27,22 +27,22 @@ def df():
 
 
 def test_summarize(df):
-    out = sv.summarize(df)
+    out = vp.summarize(df)
     assert out["rows"] == 4
     assert "Occupation" in out["names"]
 
 
 def test_missing(df):
-    counts = sv.missing(df)
+    counts = vp.missing(df)
     assert counts["Sleep Disorder"] == 2
 
 
 @pytest.mark.parametrize("fn", [
-    sv.quality_by_occupation,
-    sv.sleep_duration_distribution,
-    sv.stress_vs_quality,
-    sv.disorder_breakdown,
-    sv.correlation_heatmap,
+    vp.quality_by_occupation,
+    vp.sleep_duration_distribution,
+    vp.stress_vs_quality,
+    vp.disorder_breakdown,
+    vp.correlation_heatmap,
 ])
 def test_charts_return_figure(df, fn):
     fig = fn(df)
@@ -51,4 +51,4 @@ def test_charts_return_figure(df, fn):
 
 def test_missing_column_raises(df):
     with pytest.raises(KeyError):
-        sv.quality_by_occupation(df.drop(columns=["Occupation"]))
+        vp.quality_by_occupation(df.drop(columns=["Occupation"]))
