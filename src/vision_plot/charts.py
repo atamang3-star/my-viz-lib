@@ -79,19 +79,30 @@ def quality_by_occupation(df: pd.DataFrame) -> plt.Figure:
 def sleep_duration_distribution(df: pd.DataFrame) -> plt.Figure:
     """Histogram of sleep duration with a mean reference line.
 
-    Aesthetic: soft filled bars with a thin surface gap between them, and a
-    single labelled marker for the mean so the summary rides on the shape.
+    Aesthetic: half-hour bins keep the shape readable (narrower bins split the
+    round-number clustering into a noisy comb), each bar carries its count so
+    the exact numbers are never in doubt, and a single labelled line marks the
+    mean.
     """
     _require(df, ["Sleep Duration"])
     apply_theme()
     hours = df["Sleep Duration"]
 
     fig, ax = plt.subplots(figsize=(8, 5))
-    ax.hist(hours, bins=np.arange(5.5, 8.6, 0.25), color=ACCENT,
-            edgecolor=INK["surface"], linewidth=1.5, zorder=3)
+    counts, edges, _ = ax.hist(hours, bins=np.arange(5.5, 8.51, 0.5),
+                               color=ACCENT, edgecolor=INK["surface"],
+                               linewidth=1.5, zorder=3)
+    top = counts.max() * 1.15
+    ax.set_ylim(0, top)
+    for c, e in zip(counts, edges[:-1]):
+        if c:
+            ax.text(e + 0.25, c + top * 0.015, f"{int(c)}", ha="center",
+                    va="bottom", color=INK["secondary"], fontweight="bold",
+                    fontsize=10)
+
     mean = hours.mean()
     ax.axvline(mean, color=PALETTE[1], linewidth=2, zorder=4)
-    ax.text(mean + 0.05, ax.get_ylim()[1] * 0.94, f"mean {mean:.1f} h",
+    ax.text(mean + 0.06, top * 0.9, f"mean {mean:.1f} h",
             color=PALETTE[1], fontweight="bold", fontsize=10)
 
     style_axes(ax, grid_axis="y")
