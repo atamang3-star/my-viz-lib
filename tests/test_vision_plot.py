@@ -40,7 +40,7 @@ def test_missing(df):
 @pytest.mark.parametrize("fn", [
     vp.quality_by_occupation,
     vp.sleep_duration_distribution,
-    vp.stress_vs_quality,
+    vp.quality_by_stress,
     vp.disorder_breakdown,
     vp.quality_correlations,
 ])

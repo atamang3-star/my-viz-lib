@@ -19,9 +19,9 @@ import pandas as pd
 from .charts import (
     disorder_breakdown,
     quality_by_occupation,
+    quality_by_stress,
     quality_correlations,
     sleep_duration_distribution,
-    stress_vs_quality,
 )
 from .theme import PALETTE, apply_theme
 
@@ -50,7 +50,7 @@ __all__ = [
     "PALETTE",
     "quality_by_occupation",
     "sleep_duration_distribution",
-    "stress_vs_quality",
+    "quality_by_stress",
     "disorder_breakdown",
     "quality_correlations",
 ]

@@ -103,29 +103,33 @@ def sleep_duration_distribution(df: pd.DataFrame) -> plt.Figure:
     return fig
 
 
-def stress_vs_quality(df: pd.DataFrame) -> plt.Figure:
-    """Scatter of stress level against sleep quality, split by gender.
+def quality_by_stress(df: pd.DataFrame) -> plt.Figure:
+    """Bars: average sleep quality at each stress level.
 
-    Aesthetic: two categorical hues (identity, not magnitude) with a thin
-    surface ring on each marker so overlapping points stay legible, plus a
-    legend because there is more than one series.
+    Aesthetic: aggregating one bar per stress level (instead of a cloud of
+    overlapping dots) turns the relationship into a single clear message — the
+    bars step down as stress climbs. A single accent hue keeps the focus on the
+    trend, and each bar is topped with its value.
     """
-    _require(df, ["Stress Level", "Quality of Sleep", "Gender"])
+    _require(df, ["Stress Level", "Quality of Sleep"])
     apply_theme()
+    means = df.groupby("Stress Level")["Quality of Sleep"].mean()
 
     fig, ax = plt.subplots(figsize=(8, 5.5))
-    for hue, (name, grp) in zip(PALETTE, df.groupby("Gender")):
-        jitter = np.random.default_rng(0).normal(0, 0.06, len(grp))
-        ax.scatter(grp["Stress Level"] + jitter, grp["Quality of Sleep"],
-                   s=70, color=hue, edgecolor=INK["surface"], linewidth=1.2,
-                   alpha=0.85, label=name, zorder=3)
+    bars = ax.bar(means.index, means.values, color=ACCENT, width=0.7, zorder=3)
+    for bar, val in zip(bars, means.values):
+        ax.text(bar.get_x() + bar.get_width() / 2, val + 0.12, f"{val:.1f}",
+                ha="center", va="bottom", color=INK["secondary"],
+                fontweight="bold", fontsize=9)
 
     style_axes(ax, grid_axis="y")
+    ax.set_ylim(0, 10)
+    ax.set_xticks(means.index)
+    ax.tick_params(axis="x", length=5, color=INK["baseline"])
     ax.set_xlabel("Stress level (1–10)")
-    ax.set_ylabel("Sleep quality (1–10)")
-    ax.legend(frameon=False, loc="lower left", title="Gender")
-    titled(ax, "Stress versus sleep quality",
-           "Each dot is one person; higher stress tracks lower quality")
+    ax.set_ylabel("Mean sleep quality (1–10)")
+    titled(ax, "Higher stress, worse sleep",
+           "Average sleep quality at each stress level", title_color=ACCENT)
     fig.tight_layout()
     return fig
 
