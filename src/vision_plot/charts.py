@@ -65,8 +65,12 @@ def quality_by_occupation(df: pd.DataFrame) -> plt.Figure:
     ax.set_xlim(0, 10)
     ax.set_xticks([])
     ax.spines["bottom"].set_visible(False)
+    # Bold only the winning occupation's label so its name reads as emphatically
+    # as its bar — the reader's eye ties the two together.
+    ax.get_yticklabels()[top].set_fontweight("bold")
     titled(ax, "Which jobs sleep best?",
-           "Mean quality-of-sleep score (1–10) by occupation")
+           "Mean quality-of-sleep score (1–10) by occupation",
+           title_color=ACCENT)
     fig.tight_layout()
     return fig
 

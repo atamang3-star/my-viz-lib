@@ -23,8 +23,8 @@ PALETTE = [
     "#e34948",  # 8 red
 ]
 
-ACCENT = PALETTE[0]     # single-series charts use one confident hue
-HIGHLIGHT = PALETTE[1]  # warm emphasis for the one mark that matters most
+ACCENT = "#4C72B0"     # single-series charts use one confident (muted) blue
+HIGHLIGHT = "#DD8452"  # warm emphasis for the one mark that matters most
 
 # Ink + chrome. Text always wears an ink token, never a series color.
 INK = {
@@ -75,10 +75,15 @@ def style_axes(ax, *, grid_axis: str | None = "x") -> None:
         ax.set_axisbelow(True)
 
 
-def titled(ax, title: str, subtitle: str | None = None) -> None:
-    """Left-aligned title with an optional secondary-ink subtitle."""
+def titled(ax, title: str, subtitle: str | None = None,
+           title_color: str | None = None) -> None:
+    """Left-aligned title with an optional secondary-ink subtitle.
+
+    ``title_color`` overrides the default ink for the title text — handy for
+    tying a chart's headline to its own accent color.
+    """
     ax.set_title(title, loc="left", fontsize=14, fontweight="bold",
-                 color=INK["primary"], pad=30 if subtitle else 10)
+                 color=title_color or INK["primary"], pad=30 if subtitle else 10)
     if subtitle:
         ax.text(0.0, 1.015, subtitle, transform=ax.transAxes,
                 fontsize=10.5, color=INK["secondary"], va="bottom")
