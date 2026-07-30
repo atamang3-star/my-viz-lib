@@ -1,9 +1,9 @@
 # vision_plot
 
-**vision_plot** is a tiny, opinionated **visualization library** for sleep-health
-data. Give it a pandas DataFrame, get back a publication-clean Matplotlib figure —
-every chart shares one validated, colorblind-aware palette and the same
-recessive-chrome styling, so a whole report looks like it came from one hand.
+**vision_plot** is a tiny, practical **visualization library** built for
+sleep-health data. Give it a pandas DataFrame and get back a well-formatted,
+publication-clean Matplotlib figure — every chart shares the same styling, so an
+entire report looks like it came from one hand.
 
 Built by following the *Build Your First Library* steps: `src/` layout, a real
 `__init__.py` public API, `pyproject.toml` metadata, an editable install, tests,
