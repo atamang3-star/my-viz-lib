@@ -23,7 +23,8 @@ PALETTE = [
     "#e34948",  # 8 red
 ]
 
-ACCENT = PALETTE[0]  # single-series charts use one confident hue
+ACCENT = PALETTE[0]     # single-series charts use one confident hue
+HIGHLIGHT = PALETTE[1]  # warm emphasis for the one mark that matters most
 
 # Ink + chrome. Text always wears an ink token, never a series color.
 INK = {

@@ -16,7 +16,9 @@ import numpy as np
 import pandas as pd
 from matplotlib.colors import LinearSegmentedColormap
 
-from .theme import ACCENT, DIVERGING, INK, PALETTE, apply_theme, style_axes, titled
+from .theme import (
+    ACCENT, DIVERGING, HIGHLIGHT, INK, PALETTE, apply_theme, style_axes, titled,
+)
 
 # Numeric columns worth correlating (Person ID is just a row label).
 _NUMERIC = [
@@ -34,21 +36,29 @@ def _require(df: pd.DataFrame, cols: list[str]) -> None:
 def quality_by_occupation(df: pd.DataFrame) -> plt.Figure:
     """Ranked horizontal bars: mean sleep quality per occupation.
 
-    Aesthetic: a single accent hue (ranking needs magnitude, not identity),
-    bars sorted so the reader gets the ordering for free, and each bar
-    direct-labelled so the x-axis can disappear entirely.
+    Aesthetic: a single accent hue for context, with the top-scoring occupation
+    picked out in a warm highlight so the winner reads instantly. Bars are sorted
+    so the ordering comes for free, and each bar is direct-labelled so the x-axis
+    can disappear entirely.
     """
     _require(df, ["Occupation", "Quality of Sleep"])
     apply_theme()
     means = (df.groupby("Occupation")["Quality of Sleep"]
                .mean().sort_values())
 
+    # Everything sits in the calm accent; the highest bar gets a warm highlight
+    # so the reader's eye lands on the best-sleeping job first.
+    top = len(means) - 1
+    colors = [ACCENT] * len(means)
+    colors[top] = HIGHLIGHT
+
     fig, ax = plt.subplots(figsize=(8, 5.5))
-    bars = ax.barh(means.index, means.values, color=ACCENT,
+    bars = ax.barh(means.index, means.values, color=colors,
                    height=0.68, zorder=3)
-    for bar, val in zip(bars, means.values):
+    for i, (bar, val) in enumerate(zip(bars, means.values)):
+        label = f"Mean {val:.1f}" if i == top else f"{val:.1f}"
         ax.text(val - 0.12, bar.get_y() + bar.get_height() / 2,
-                f"{val:.1f}", va="center", ha="right",
+                label, va="center", ha="right",
                 color=INK["surface"], fontweight="bold", fontsize=10)
 
     style_axes(ax, grid_axis=None)
