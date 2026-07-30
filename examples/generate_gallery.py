@@ -21,7 +21,7 @@ charts = {
     "sleep_duration_distribution": vp.sleep_duration_distribution,
     "stress_vs_quality": vp.stress_vs_quality,
     "disorder_breakdown": vp.disorder_breakdown,
-    "correlation_heatmap": vp.correlation_heatmap,
+    "quality_correlations": vp.quality_correlations,
 }
 
 for name, fn in charts.items():

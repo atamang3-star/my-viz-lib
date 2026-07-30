@@ -17,9 +17,9 @@ from __future__ import annotations
 import pandas as pd
 
 from .charts import (
-    correlation_heatmap,
     disorder_breakdown,
     quality_by_occupation,
+    quality_correlations,
     sleep_duration_distribution,
     stress_vs_quality,
 )
@@ -52,5 +52,5 @@ __all__ = [
     "sleep_duration_distribution",
     "stress_vs_quality",
     "disorder_breakdown",
-    "correlation_heatmap",
+    "quality_correlations",
 ]

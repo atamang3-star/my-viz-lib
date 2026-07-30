@@ -52,7 +52,7 @@ a report.
 | `sleep_duration_distribution(df)` | Histogram of nightly hours with a mean line |
 | `stress_vs_quality(df)` | Scatter of stress vs. quality, split by gender |
 | `disorder_breakdown(df)` | Donut of sleep-disorder prevalence |
-| `correlation_heatmap(df)` | Diverging heatmap of the numeric health metrics |
+| `quality_correlations(df)` | Diverging bars — what helps or hurts sleep quality |
 | `summarize(df)` / `missing(df)` | Plain-dict / Series EDA helpers |
 
 ## Gallery
@@ -60,8 +60,8 @@ a report.
 ### Ranked bars — `quality_by_occupation`
 ![quality by occupation](examples/quality_by_occupation.png)
 
-### Correlation heatmap — `correlation_heatmap`
-![correlation heatmap](examples/correlation_heatmap.png)
+### Sleep-quality drivers — `quality_correlations`
+![quality correlations](examples/quality_correlations.png)
 
 ### The rest
 ![sleep duration](examples/sleep_duration_distribution.png)
@@ -76,8 +76,9 @@ Regenerate the gallery any time with `python examples/generate_gallery.py`.
   eight categorical hues are assigned in a fixed, colorblind-aware order and
   never cycled.
 - **Color follows the data's job.** Ranking uses a single accent hue (magnitude,
-  not identity); the correlation heatmap uses a *diverging* blue→gray→red ramp
-  because correlations are signed — never a rainbow.
+  not identity); the correlation bars diverge from a zero baseline — blue for
+  factors that lift sleep quality, warm orange for those that drag it down —
+  because correlation is signed.
 - **Recessive chrome.** Top/right spines dropped, a single hairline grid on the
   value axis, muted tick labels, direct value labels on bars so an axis can
   disappear entirely. The data gets the ink; the frame gets out of the way.

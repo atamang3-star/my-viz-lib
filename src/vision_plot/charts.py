@@ -14,10 +14,9 @@ from __future__ import annotations
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from matplotlib.colors import LinearSegmentedColormap
 
 from .theme import (
-    ACCENT, DIVERGING, HIGHLIGHT, INK, PALETTE, apply_theme, style_axes, titled,
+    ACCENT, HIGHLIGHT, INK, PALETTE, apply_theme, style_axes, titled,
 )
 
 # Numeric columns worth correlating (Person ID is just a row label).
@@ -160,37 +159,38 @@ def disorder_breakdown(df: pd.DataFrame) -> plt.Figure:
     return fig
 
 
-def correlation_heatmap(df: pd.DataFrame) -> plt.Figure:
-    """Diverging heatmap of correlations between the numeric health metrics.
+def quality_correlations(df: pd.DataFrame) -> plt.Figure:
+    """Diverging bars: how strongly each factor is linked to sleep quality.
 
-    Aesthetic: correlations are *signed*, so this uses a diverging blue-gray-red
-    ramp (cool = negative, warm = positive) with a neutral midpoint at zero —
-    never a rainbow. Cells are annotated so the exact value never depends on
-    color perception alone.
+    Aesthetic: correlation is *signed*, so bars grow left/right from a zero
+    baseline — factors that lift sleep quality run right in the accent blue,
+    factors that drag it down run left in the warm highlight. Sorting turns the
+    chart into a ranked answer to "what helps, what hurts?", and each bar is
+    direct-labelled with its coefficient.
     """
     cols = [c for c in _NUMERIC if c in df.columns]
     _require(df, cols)
     apply_theme()
-    corr = df[cols].corr()
-    cmap = LinearSegmentedColormap.from_list("vision_plot_div", DIVERGING)
+    target = "Quality of Sleep"
+    corr = df[cols].corr()[target].drop(target).sort_values()
+    colors = [HIGHLIGHT if v < 0 else ACCENT for v in corr.values]
 
-    fig, ax = plt.subplots(figsize=(7.5, 6.5))
-    im = ax.imshow(corr.values, cmap=cmap, vmin=-1, vmax=1)
-    ax.set_xticks(range(len(cols)), labels=cols, rotation=40, ha="right",
-                  fontsize=9)
-    ax.set_yticks(range(len(cols)), labels=cols, fontsize=9)
-    for i in range(len(cols)):
-        for j in range(len(cols)):
-            v = corr.values[i, j]
-            ax.text(j, i, f"{v:.2f}", ha="center", va="center", fontsize=8,
-                    color=INK["surface"] if abs(v) > 0.55 else INK["primary"])
-    for side in ax.spines.values():
-        side.set_visible(False)
-    ax.tick_params(length=0)
-    cbar = fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
-    cbar.outline.set_visible(False)
-    cbar.ax.tick_params(length=0, colors=INK["muted"])
-    titled(ax, "What moves together?",
-           "Pairwise correlation of the numeric health metrics")
+    fig, ax = plt.subplots(figsize=(8, 5))
+    bars = ax.barh(corr.index, corr.values, color=colors, height=0.66, zorder=3)
+    ax.axvline(0, color=INK["baseline"], linewidth=1.4, zorder=4)
+    for bar, v in zip(bars, corr.values):
+        ha = "left" if v >= 0 else "right"
+        ax.text(v + (0.03 if v >= 0 else -0.03),
+                bar.get_y() + bar.get_height() / 2, f"{v:+.2f}",
+                va="center", ha=ha, color=INK["secondary"],
+                fontweight="bold", fontsize=9)
+
+    style_axes(ax, grid_axis="x")
+    ax.set_xlim(-1.18, 1.18)  # headroom so outer value labels clear the axis
+    ax.set_xticks([-1, -0.5, 0, 0.5, 1])
+    ax.tick_params(axis="x", length=5, color=INK["baseline"])
+    ax.set_xlabel("Correlation with sleep quality (−1 to 1)")
+    titled(ax, "What helps or hurts sleep quality?",
+           "How each factor relates to sleep quality", title_color=ACCENT)
     fig.tight_layout()
     return fig

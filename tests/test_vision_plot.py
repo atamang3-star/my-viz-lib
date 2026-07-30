@@ -42,7 +42,7 @@ def test_missing(df):
     vp.sleep_duration_distribution,
     vp.stress_vs_quality,
     vp.disorder_breakdown,
-    vp.correlation_heatmap,
+    vp.quality_correlations,
 ])
 def test_charts_return_figure(df, fn):
     fig = fn(df)
