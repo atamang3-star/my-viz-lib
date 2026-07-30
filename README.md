@@ -51,7 +51,6 @@ a report.
 | `quality_by_occupation(df)` | Ranked horizontal bars — mean sleep quality per job |
 | `sleep_duration_distribution(df)` | Histogram of nightly hours with a mean line |
 | `quality_by_stress(df)` | Bars — average sleep quality at each stress level |
-| `disorder_breakdown(df)` | Donut of sleep-disorder prevalence |
 | `quality_correlations(df)` | Diverging bars — what helps or hurts sleep quality |
 | `summarize(df)` / `missing(df)` | Plain-dict / Series EDA helpers |
 
@@ -66,7 +65,6 @@ a report.
 ### The rest
 ![sleep duration](examples/sleep_duration_distribution.png)
 ![quality by stress](examples/quality_by_stress.png)
-![disorder breakdown](examples/disorder_breakdown.png)
 
 Regenerate the gallery any time with `python examples/generate_gallery.py`.
 

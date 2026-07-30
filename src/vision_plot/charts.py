@@ -134,35 +134,6 @@ def quality_by_stress(df: pd.DataFrame) -> plt.Figure:
     return fig
 
 
-def disorder_breakdown(df: pd.DataFrame) -> plt.Figure:
-    """Donut of sleep-disorder prevalence (missing values read as 'None').
-
-    Aesthetic: a donut (not a pie) so a center label can carry the headline,
-    fixed categorical hues, and a 2px surface gap between wedges.
-    """
-    _require(df, ["Sleep Disorder"])
-    apply_theme()
-    counts = df["Sleep Disorder"].fillna("None").value_counts()
-    order = ["None", "Sleep Apnea", "Insomnia"]
-    counts = counts.reindex([o for o in order if o in counts.index])
-
-    fig, ax = plt.subplots(figsize=(6.5, 6))
-    wedges, _ = ax.pie(
-        counts.values, colors=PALETTE[:len(counts)], startangle=90,
-        counterclock=False, wedgeprops=dict(width=0.42, edgecolor=INK["surface"],
-                                            linewidth=2))
-    ax.legend(wedges, [f"{n}  ·  {v}" for n, v in counts.items()],
-              frameon=False, loc="center left", bbox_to_anchor=(0.98, 0.5))
-    healthy = counts.get("None", 0) / counts.sum() * 100
-    ax.text(0, 0.08, f"{healthy:.0f}%", ha="center", fontsize=26,
-            fontweight="bold", color=INK["primary"])
-    ax.text(0, -0.14, "no disorder", ha="center", fontsize=11,
-            color=INK["secondary"])
-    titled(ax, "Sleep disorders in the cohort")
-    fig.tight_layout()
-    return fig
-
-
 def quality_correlations(df: pd.DataFrame) -> plt.Figure:
     """Diverging bars: how strongly each factor is linked to sleep quality.
 

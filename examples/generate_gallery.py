@@ -20,7 +20,6 @@ charts = {
     "quality_by_occupation": vp.quality_by_occupation,
     "sleep_duration_distribution": vp.sleep_duration_distribution,
     "quality_by_stress": vp.quality_by_stress,
-    "disorder_breakdown": vp.disorder_breakdown,
     "quality_correlations": vp.quality_correlations,
 }
 
