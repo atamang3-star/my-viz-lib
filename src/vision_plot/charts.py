@@ -61,10 +61,13 @@ def quality_by_occupation(df: pd.DataFrame) -> plt.Figure:
                 label, va="center", ha="right",
                 color=INK["surface"], fontweight="bold", fontsize=10)
 
-    style_axes(ax, grid_axis=None)
+    # A real x-axis: ticks, marks, a baseline and a faint vertical grid so the
+    # chart reads as a measured graph, not just labelled blocks.
+    style_axes(ax, grid_axis="x")
     ax.set_xlim(0, 10)
-    ax.set_xticks([])
-    ax.spines["bottom"].set_visible(False)
+    ax.set_xticks(range(0, 11, 2))
+    ax.tick_params(axis="x", length=5, color=INK["baseline"])
+    ax.set_xlabel("Mean quality of sleep (1–10)")
     # Bold only the winning occupation's label so its name reads as emphatically
     # as its bar — the reader's eye ties the two together.
     ax.get_yticklabels()[top].set_fontweight("bold")
