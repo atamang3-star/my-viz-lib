@@ -177,7 +177,6 @@ def quality_correlations(df: pd.DataFrame) -> plt.Figure:
     ax.tick_params(axis="x", length=5, color=INK["baseline"])
     ax.set_xlabel("Correlation with sleep quality (−1 to 1)")
     titled(ax, "What's linked to sleep quality?",
-           "Correlation of each factor with sleep quality — not causation",
-           title_color=ACCENT)
+           "Correlation, not causation", title_color=ACCENT)
     fig.tight_layout()
     return fig
