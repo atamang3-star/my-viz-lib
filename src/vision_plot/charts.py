@@ -55,10 +55,9 @@ def quality_by_occupation(df: pd.DataFrame) -> plt.Figure:
     fig, ax = plt.subplots(figsize=(8, 5.5))
     bars = ax.barh(means.index, means.values, color=colors,
                    height=0.68, zorder=3)
-    for i, (bar, val) in enumerate(zip(bars, means.values)):
-        label = f"Mean {val:.1f}" if i == top else f"{val:.1f}"
+    for bar, val in zip(bars, means.values):
         ax.text(val - 0.12, bar.get_y() + bar.get_height() / 2,
-                label, va="center", ha="right",
+                f"{val:.1f}", va="center", ha="right",
                 color=INK["surface"], fontweight="bold", fontsize=10)
 
     # A real x-axis: ticks, marks, a baseline and a faint vertical grid so the
