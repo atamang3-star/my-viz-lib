@@ -12,12 +12,9 @@ save it, or drop it into a report.
 from __future__ import annotations
 
 import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 
-from .theme import (
-    ACCENT, HIGHLIGHT, INK, PALETTE, apply_theme, style_axes, titled,
-)
+from .theme import ACCENT, HIGHLIGHT, INK, apply_theme, style_axes, titled
 
 # Numeric columns worth correlating (Person ID is just a row label).
 _NUMERIC = [
@@ -78,75 +75,6 @@ def quality_by_occupation(df: pd.DataFrame) -> plt.Figure:
     titled(ax, "Which jobs sleep best?",
            "Average sleep quality by occupation",
            title_color=ACCENT)
-    fig.tight_layout()
-    return fig
-
-
-def sleep_duration_distribution(df: pd.DataFrame) -> plt.Figure:
-    """Histogram of sleep duration with a mean reference line.
-
-    Aesthetic: half-hour bins keep the shape readable (narrower bins split the
-    round-number clustering into a noisy comb), each bar carries its count so
-    the exact numbers are never in doubt, and a single labelled line marks the
-    mean.
-    """
-    _require(df, ["Sleep Duration"])
-    apply_theme()
-    hours = df["Sleep Duration"]
-
-    fig, ax = plt.subplots(figsize=(8, 5))
-    counts, edges, _ = ax.hist(hours, bins=np.arange(5.5, 8.51, 0.5),
-                               color=ACCENT, edgecolor=INK["surface"],
-                               linewidth=1.5, zorder=3)
-    top = counts.max() * 1.15
-    ax.set_ylim(0, top)
-    for c, e in zip(counts, edges[:-1]):
-        if c:
-            ax.text(e + 0.25, c + top * 0.015, f"{int(c)}", ha="center",
-                    va="bottom", color=INK["secondary"], fontweight="bold",
-                    fontsize=10)
-
-    mean = hours.mean()
-    ax.axvline(mean, color=PALETTE[1], linewidth=2, zorder=4)
-    ax.text(mean + 0.06, top * 0.9, f"mean {mean:.1f} h",
-            color=PALETTE[1], fontweight="bold", fontsize=10)
-
-    style_axes(ax, grid_axis="y")
-    ax.set_xlabel("Sleep duration (hours)")
-    ax.set_ylabel("People")
-    titled(ax, "How long do people actually sleep?",
-           "Distribution of nightly sleep duration")
-    fig.tight_layout()
-    return fig
-
-
-def quality_by_stress(df: pd.DataFrame) -> plt.Figure:
-    """Bars: average sleep quality at each stress level.
-
-    Aesthetic: aggregating one bar per stress level (instead of a cloud of
-    overlapping dots) turns the relationship into a single clear message — the
-    bars step down as stress climbs. A single accent hue keeps the focus on the
-    trend, and each bar is topped with its value.
-    """
-    _require(df, ["Stress Level", "Quality of Sleep"])
-    apply_theme()
-    means = df.groupby("Stress Level")["Quality of Sleep"].mean()
-
-    fig, ax = plt.subplots(figsize=(8, 5.5))
-    bars = ax.bar(means.index, means.values, color=ACCENT, width=0.7, zorder=3)
-    for bar, val in zip(bars, means.values):
-        ax.text(bar.get_x() + bar.get_width() / 2, val + 0.12, f"{val:.1f}",
-                ha="center", va="bottom", color=INK["secondary"],
-                fontweight="bold", fontsize=9)
-
-    style_axes(ax, grid_axis="y")
-    ax.set_ylim(0, 10)
-    ax.set_xticks(means.index)
-    ax.tick_params(axis="x", length=5, color=INK["baseline"])
-    ax.set_xlabel("Stress level (1–10)")
-    ax.set_ylabel("Mean sleep quality (1–10)")
-    titled(ax, "Higher stress, worse sleep",
-           "Average sleep quality at each stress level", title_color=ACCENT)
     fig.tight_layout()
     return fig
 

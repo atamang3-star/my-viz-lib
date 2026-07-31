@@ -18,8 +18,6 @@ df = pd.read_csv(ROOT / "data" / "Sleep_health.csv")
 
 charts = {
     "quality_by_occupation": vp.quality_by_occupation,
-    "sleep_duration_distribution": vp.sleep_duration_distribution,
-    "quality_by_stress": vp.quality_by_stress,
     "quality_correlations": vp.quality_correlations,
 }
 

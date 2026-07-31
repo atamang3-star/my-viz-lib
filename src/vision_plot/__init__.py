@@ -16,12 +16,7 @@ from __future__ import annotations
 
 import pandas as pd
 
-from .charts import (
-    quality_by_occupation,
-    quality_by_stress,
-    quality_correlations,
-    sleep_duration_distribution,
-)
+from .charts import quality_by_occupation, quality_correlations
 from .theme import PALETTE, apply_theme
 
 __version__ = "0.1.0"
@@ -48,7 +43,5 @@ __all__ = [
     "apply_theme",
     "PALETTE",
     "quality_by_occupation",
-    "sleep_duration_distribution",
-    "quality_by_stress",
     "quality_correlations",
 ]
