@@ -35,29 +35,34 @@ def _require(df: pd.DataFrame, cols: list[str]) -> None:
 def quality_by_occupation(df: pd.DataFrame) -> plt.Figure:
     """Ranked horizontal bars: mean sleep quality per occupation.
 
-    Aesthetic: a single accent hue for context, with the top-scoring occupation
-    picked out in a warm highlight so the winner reads instantly. Bars are sorted
-    so the ordering comes for free, and each bar is direct-labelled so the x-axis
-    can disappear entirely.
+    Aesthetic: the two extremes are the story, so only they carry saturated
+    colour — cool blue for the best-sleeping job, warm orange for the two
+    worst — while the middle recedes into neutral gray. Blue and orange are a
+    validated colourblind-safe pair; the neutral middle keeps a third saturated
+    hue (which could not stay colourblind-safe beside them) off the chart.
+    Bars are sorted and each is direct-labelled so the x-axis is optional.
     """
     _require(df, ["Occupation", "Quality of Sleep"])
     apply_theme()
     means = (df.groupby("Occupation")["Quality of Sleep"]
                .mean().sort_values())
 
-    # Everything sits in the calm accent; the highest bar gets a warm highlight
-    # so the reader's eye lands on the best-sleeping job first.
-    top = len(means) - 1
-    colors = [ACCENT] * len(means)
-    colors[top] = HIGHLIGHT
+    # Sorted ascending: index 0-1 are the two lowest, the last is the highest.
+    n = len(means)
+    emphasized = {0, 1, n - 1}          # two worst + the best
+    colors = [INK["baseline"]] * n      # neutral gray context
+    colors[n - 1] = ACCENT              # best sleeper -> cool blue
+    colors[0] = colors[1] = HIGHLIGHT   # two lowest -> warm orange
 
     fig, ax = plt.subplots(figsize=(8, 5.5))
     bars = ax.barh(means.index, means.values, color=colors,
                    height=0.68, zorder=3)
-    for bar, val in zip(bars, means.values):
+    for i, (bar, val) in enumerate(zip(bars, means.values)):
+        # White reads on the saturated bars; dark ink on the light gray ones.
+        label_color = INK["surface"] if i in emphasized else INK["secondary"]
         ax.text(val - 0.12, bar.get_y() + bar.get_height() / 2,
                 f"{val:.1f}", va="center", ha="right",
-                color=INK["surface"], fontweight="bold", fontsize=10)
+                color=label_color, fontweight="bold", fontsize=10)
 
     # A real x-axis: ticks, marks, a baseline and a faint vertical grid so the
     # chart reads as a measured graph, not just labelled blocks.
@@ -66,9 +71,10 @@ def quality_by_occupation(df: pd.DataFrame) -> plt.Figure:
     ax.set_xticks(range(0, 11, 2))
     ax.tick_params(axis="x", length=5, color=INK["baseline"])
     ax.set_xlabel("Mean quality of sleep (1–10)")
-    # Bold only the winning occupation's label so its name reads as emphatically
-    # as its bar — the reader's eye ties the two together.
-    ax.get_yticklabels()[top].set_fontweight("bold")
+    # Bold the emphasised occupations' names so they read as strongly as their
+    # coloured bars — the reader's eye ties name and bar together.
+    for i in emphasized:
+        ax.get_yticklabels()[i].set_fontweight("bold")
     titled(ax, "Which jobs sleep best?",
            "Average sleep quality by occupation",
            title_color=ACCENT)
