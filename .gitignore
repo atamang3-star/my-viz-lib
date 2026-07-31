@@ -1,0 +1,12 @@
+# Build artifacts (generated — keep out of git, per the slides)
+dist/
+build/
+*.egg-info/
+src/*.egg-info/
+
+# Python caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
